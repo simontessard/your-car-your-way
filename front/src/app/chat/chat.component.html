@@ -1,41 +1,48 @@
-<div style="display: flex; flex-direction: column; justify-content: center; margin: auto; height: 100%; align-items: center">
-  <h1 style="font-size: 25px">Chat en temps réel (démo)</h1>
-  <!-- Affiche le nom de l'utilisateur après qu'il ait rejoint -->
-  <div *ngIf="isJoined" style="margin-bottom: 20px;">
-    <h2 style="font-size: 20px;">Connecté en tant que : <strong>{{ username }}</strong></h2>
-  </div>
+<div class="chat-container">
+  <header class="chat-header">
+    <h1>Chat en temps réel <span class="badge">Démo</span></h1>
+    <!-- Affiche le nom de l'utilisateur après qu'il ait rejoint -->
+    <div *ngIf="isJoined" class="user-status">
+      <span>{{ username }}</span>
+    </div>
+  </header>
 
   <!-- Avant de rejoindre la discussion -->
-  <div *ngIf="!isJoined">
-    <mat-card class="join-card" >
+  <div *ngIf="!isJoined" class="join-wrapper">
+    <mat-card class="join-card">
       <mat-card-content style="display: flex; flex-direction: column">
         <mat-form-field class="full-width">
           <input matInput [(ngModel)]="username" placeholder="Entrez votre nom" />
         </mat-form-field>
-        <button mat-raised-button color="primary" (click)="joinChat()">Rejoindre la discussion</button>
+        <button mat-raised-button (click)="joinChat()" class="join-button">
+          Rejoindre la discussion
+        </button>
       </mat-card-content>
     </mat-card>
   </div>
 
   <!-- Après avoir rejoint la discussion -->
-  <div *ngIf="isJoined">
+  <div *ngIf="isJoined" class="chat-wrapper">
     <mat-card class="chat-card">
-      <mat-card-content>
-        <!-- Liste des messages -->
-        <div *ngIf="messages.length > 0" class="message-list">
-          <mat-list>
-            <mat-list-item *ngFor="let message of messages">
-              <strong>{{ message.sender }}:</strong> {{ message.content }}
-            </mat-list-item>
-          </mat-list>
+      <mat-card-content class="message-list" #scrollContainer>
+        <div *ngFor="let message of messages" 
+             [class.own-message]="message.sender === username" 
+             class="message-bubble">
+          <span class="sender">{{ message.sender }}</span>
+          <p class="content">{{ message.content }}</p>
         </div>
-
-        <!-- Entrer un nouveau message -->
-        <mat-form-field class="full-width">
-          <input matInput [(ngModel)]="newMessage" placeholder="Entrez votre message" />
-        </mat-form-field>
-        <button mat-raised-button color="accent" (click)="sendMessage()" style="margin-left: 20px">Envoyer</button>
       </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-actions class="input-area">
+        <mat-form-field appearance="fill" class="message-input">
+          <input matInput [(ngModel)]="newMessage" placeholder="Écrivez un message..." (keyup.enter)="sendMessage()" />
+        </mat-form-field>
+        <button mat-mini-fab color="accent" (click)="sendMessage()" [disabled]="!newMessage">
+          <mat-icon>send</mat-icon>
+        </button>
+      </mat-card-actions>
     </mat-card>
   </div>
 </div>
