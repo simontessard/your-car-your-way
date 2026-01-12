@@ -115,11 +115,12 @@
 
 /* Zone de saisie */
 .input-area {
-    padding: 12px !important;
     display: flex;
-    align-items: center;
+    align-items: stretch; /* Force les enfants à avoir la même hauteur */
     gap: 8px;
-  }
+    padding: 12px 14px !important;
+    background: white;
+}
   
 .message-input {
     flex-grow: 1;
@@ -127,4 +128,9 @@
   
 .full-width {
     width: 100%;
+}
+
+.send-button {
+    height: auto !important; /* Permet au bouton de suivre le stretch du flexbox */
+    border-radius: 0 4px 4px 0 !important; /* Arrondis uniquement à droite */
 }

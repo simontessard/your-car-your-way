@@ -36,11 +36,11 @@
       <mat-divider></mat-divider>
 
       <mat-card-actions class="input-area">
-        <mat-form-field appearance="fill" class="message-input">
+        <mat-form-field appearance="fill" class="message-input" subscriptSizing="dynamic">
           <input matInput [(ngModel)]="newMessage" placeholder="Écrivez un message..." (keyup.enter)="sendMessage()" />
         </mat-form-field>
-        <button mat-mini-fab color="accent" (click)="sendMessage()" [disabled]="!newMessage">
-          <mat-icon>send</mat-icon>
+        <button mat-flat-button color="accent" class="send-button" (click)="sendMessage()" [disabled]="!newMessage">
+          <mat-icon style="margin-inline: 0px;">send</mat-icon>
         </button>
       </mat-card-actions>
     </mat-card>
