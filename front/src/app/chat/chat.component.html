@@ -1,6 +1,6 @@
 <div class="chat-container">
   <header class="chat-header">
-    <h1>Chat en temps réel <span class="badge">Démo</span></h1>
+    <h1>Chat en temps réel</h1>
     
     <div *ngIf="isJoined" class="user-status" [title]="username">
       <img class="header-avatar" 
@@ -12,8 +12,9 @@
 
   <!-- Avant de rejoindre la discussion -->
   <div *ngIf="!isJoined" class="join-wrapper">
+    <img src="/assets/logo.png" alt="Your Car Your Way Logo" class="logo" style="width: 160px; border: 4px; object-fit: contain; margin-bottom: 12px;">
     <mat-card class="join-card">
-      <mat-card-content style="display: flex; flex-direction: column">
+      <mat-card-content style="display: flex; flex-direction: column;">
         <mat-form-field class="full-width">
           <input matInput [(ngModel)]="username" placeholder="Entrez votre nom" />
         </mat-form-field>
