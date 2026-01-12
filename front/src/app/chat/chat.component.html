@@ -1,8 +1,11 @@
 <div class="chat-container">
   <header class="chat-header">
     <h1>Chat en temps réel <span class="badge">Démo</span></h1>
-    <!-- Affiche le nom de l'utilisateur après qu'il ait rejoint -->
-    <div *ngIf="isJoined" class="user-status">
+    
+    <div *ngIf="isJoined" class="user-status" [title]="username">
+      <img class="header-avatar" 
+           [src]="'https://ui-avatars.com/api/?name=' + username + '&background=fff&color=296EAC&bold=true'" 
+           alt="Mon avatar">
       <span>{{ username }}</span>
     </div>
   </header>
@@ -26,10 +29,17 @@
     <mat-card class="chat-card">
       <mat-card-content class="message-list" #scrollContainer>
         <div *ngFor="let message of messages" 
-             [class.own-message]="message.sender === username" 
-             class="message-bubble">
-          <span class="sender">{{ message.sender }}</span>
-          <p class="content">{{ message.content }}</p>
+             class="message-row" 
+             [class.own-row]="message.sender === username">
+          
+          <img class="avatar" 
+               [src]="'https://ui-avatars.com/api/?name=' + message.sender + '&background=random&color=fff'" 
+               alt="avatar">
+      
+          <div class="message-bubble" [class.own-message]="message.sender === username">
+            <span class="sender">{{ message.sender }}</span>
+            <p class="content">{{ message.content }}</p>
+          </div>
         </div>
       </mat-card-content>
 
