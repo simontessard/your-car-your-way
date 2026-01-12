@@ -1,12 +1,14 @@
-# Your Car Your Way - PoC
+# Your Car Your Way - Chat
 
-## Description
+## Contexte
 
 Your Car Your Way fait des locations de voitures depuis une vingtaine d’années.
 
-## Front-end
+## Description
 
-Ce projet a été généré avec [Angular](https://github.com/angular/angular-cli).
+Ce projet mets en avant la fonctionnalité de chat en temps réel.
+
+## Front-end (Angular)
 
 - Utilisation de `@angular/material` (https://material.angular.io/), qui nous donnent des composants d'interface simple à personnaliser.
 
@@ -17,12 +19,10 @@ npm install
 ```
 
 ```bash
-ng serve
+npm start
 ```
 
-## Back-end
-
-Le back est en Spring Boot
+## Back-end (Spring Boot)
 
 Installez les dépendances avant de build :
 
