@@ -1,65 +1,81 @@
-<div class="chat-container">
-  <header class="chat-header">
-    <h1>Chat en temps réel</h1>
-    
-    <div *ngIf="isJoined" class="user-status" [title]="username">
-      <img class="header-avatar" 
+<div class="flex flex-col h-screen bg-white">
+  
+  <header class="fixed top-0 left-0 right-0 z-99 flex justify-between items-center px-4 py-4 bg-gradient-to-r from-[#296EAC] to-[#4347E2] text-white shadow-md">
+    <h1 class="!text-base !mb-0">Chat en temps réel</h1>
+    <div *ngIf="isJoined" class="flex items-center gap-2.5 font-medium" [title]="username">
+      <img class="size-6 rounded-full border-2 border-white/80 object-cover" 
            [src]="'https://ui-avatars.com/api/?name=' + username + '&background=fff&color=296EAC&bold=true'" 
            alt="Mon avatar">
-      <span>{{ username }}</span>
+      <span class="text-sm">{{ username }}</span>
     </div>
   </header>
 
-  <!-- Avant de rejoindre la discussion -->
-  <div *ngIf="!isJoined" class="join-wrapper">
-    <img src="/assets/logo.png" alt="Your Car Your Way Logo" class="logo" style="width: 160px; border: 4px; object-fit: contain; margin-bottom: 12px;">
-    <mat-card class="join-card">
-      <mat-card-content style="display: flex; flex-direction: column;">
-        <mat-form-field class="full-width">
-          <input matInput [(ngModel)]="username" placeholder="Entrez votre nom" />
-        </mat-form-field>
-        <button mat-raised-button (click)="joinChat()" class="join-button">
+  <div *ngIf="!isJoined" class="flex flex-col justify-center items-center h-full px-4 pt-14">
+    <img src="/assets/logo.png" alt="Your Car Your Way Logo" class="w-40 object-contain mb-3">
+    
+    <div class="w-full max-w-[400px] bg-white rounded-xl shadow-sm p-6 border border-gray-100 mb-6">
+      <div class="flex flex-col gap-4">
+        <input 
+          [(ngModel)]="username" 
+          type="text"
+          placeholder="Entrez votre nom" 
+          class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#296EAC] focus:border-transparent outline-none transition-all"
+        />
+        <button 
+          (click)="joinChat()" 
+          class="w-full py-3 bg-gradient-to-r from-[#296EAC] to-[#4347E2] text-white rounded-lg hover:opacity-90 active:scale-[0.98] transition-all shadow-lg"
+        >
           Rejoindre la discussion
         </button>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
 
-    <mat-card style="margin-top: 20px;">
-        <mat-card-title style="font-size: small; padding-block: 2px; padding-inline: 10px;">
-          Version démo
-        </mat-card-title>
-    </mat-card>
+    <span class="text-xs font-semibold text-gray-500">Version démo © 2026</span>
   </div>
 
-  <!-- Après avoir rejoint la discussion -->
-  <div *ngIf="isJoined" class="chat-wrapper">
-    <mat-card class="chat-card">
-      <mat-card-content class="message-list" #scrollContainer>
+  <div *ngIf="isJoined" class="flex flex-col h-full pt-14 w-full">
+    <div class="flex flex-col h-full w-full overflow-hidden">
+      
+      <div class="flex-grow overflow-y-auto flex flex-col gap-3 p-4 bg-gray-50" #scrollContainer>
         <div *ngFor="let message of messages" 
-             class="message-row" 
-             [class.own-row]="message.sender === username">
+             class="flex items-end gap-2 my-1" 
+             [class.flex-row-reverse]="message.sender === username">
           
-          <img class="avatar" 
+          <img class="w-9 h-9 rounded-full object-cover border-2 border-white shadow-sm shrink-0" 
                [src]="'https://ui-avatars.com/api/?name=' + message.sender + '&background=random&color=fff'" 
                alt="avatar">
       
-          <div class="message-bubble" [class.own-message]="message.sender === username">
-            <span class="sender">{{ message.sender }}</span>
-            <p class="content">{{ message.content }}</p>
+          <div class="max-w-[70%] px-3.5 py-2.5 shadow-sm transition-all"
+               [ngClass]="message.sender === username 
+                ? 'bg-gray-200 text-gray-800 rounded-[15px_15px_2px_15px]' 
+                : 'bg-gradient-to-r from-[#296EAC] to-[#4347E2] text-white rounded-[15px_15px_15px_2px]'">
+            
+            <span class="block text-[10px] font-bold mb-0.5 uppercase tracking-tight"
+                  [class.text-[#296EAC]]="message.sender === username">
+              {{ message.sender }}
+            </span>
+            <p class="m-0 leading-tight text-sm">{{ message.content }}</p>
           </div>
         </div>
-      </mat-card-content>
+      </div>
 
-      <mat-divider></mat-divider>
-
-      <mat-card-actions class="input-area">
-        <mat-form-field appearance="fill" class="message-input" subscriptSizing="dynamic">
-          <input matInput [(ngModel)]="newMessage" placeholder="Écrivez un message..." (keyup.enter)="sendMessage()" />
-        </mat-form-field>
-        <button mat-flat-button color="accent" class="send-button" (click)="sendMessage()" [disabled]="!newMessage">
-          <mat-icon style="margin-inline: 0px;">send</mat-icon>
+      <footer class="flex items-center gap-2 p-3 bg-white border-t border-gray-100">
+        <input 
+          [(ngModel)]="newMessage" 
+          (keyup.enter)="sendMessage()"
+          placeholder="Écrivez un message..." 
+          class="flex-grow px-4 py-3 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-[#296EAC] transition-all"
+        />
+        <button 
+          (click)="sendMessage()" 
+          [disabled]="!newMessage"
+          class="bg-[#4347E2] md:hover:bg-[#296EAC] disabled:bg-gray-300 text-white p-3 rounded-xl transition-all"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="size-5 rotate-90" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+          </svg>
         </button>
-      </mat-card-actions>
-    </mat-card>
+      </footer>
+    </div>
   </div>
 </div>
