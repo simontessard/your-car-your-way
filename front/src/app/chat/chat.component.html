@@ -1,14 +1,6 @@
 <div class="flex flex-col h-screen bg-white">
   
-  <header class="fixed top-0 left-0 right-0 z-99 flex justify-between items-center px-4 py-4 bg-gradient-to-r from-[#296EAC] to-[#4347E2] text-white shadow-md">
-    <h1 class="!text-base !mb-0">Chat en temps réel</h1>
-    <div *ngIf="isJoined" class="flex items-center gap-2.5 font-medium" [title]="username">
-      <img class="size-6 rounded-full border-2 border-white/80 object-cover" 
-           [src]="'https://ui-avatars.com/api/?name=' + username + '&background=fff&color=296EAC&bold=true'" 
-           alt="Mon avatar">
-      <span class="text-sm">{{ username }}</span>
-    </div>
-  </header>
+  <app-header [isJoined]="isJoined" [username]="username"></app-header>
 
   <div *ngIf="!isJoined" class="flex flex-col justify-center items-center h-full px-4 pt-14">
     <img src="/assets/logo.png" alt="Your Car Your Way Logo" class="w-40 object-contain mb-3">
@@ -33,30 +25,38 @@
     <span class="text-xs font-semibold text-gray-500">Version démo © 2026</span>
   </div>
 
-  <div *ngIf="isJoined" class="flex flex-col h-full pt-14 w-full">
+  <div *ngIf="isJoined" class="flex flex-col h-full pt-16 md:pt-18 w-full">
     <div class="flex flex-col h-full w-full overflow-hidden">
       
       <div class="flex-grow overflow-y-auto flex flex-col gap-3 p-4 bg-gray-50" #scrollContainer>
+
         <div *ngFor="let message of messages" 
-             class="flex items-end gap-2 my-1" 
-             [class.flex-row-reverse]="message.sender === username">
+        class="flex items-end gap-2 my-1" 
+        [class.flex-row-reverse]="message.sender === username"
+        [class.justify-center]="message.sender === 'Session'"> <img *ngIf="message.sender !== 'Session'"
+          class="size-9 rounded-full object-cover border-2 border-white shadow-sm shrink-0" 
+          [src]="'https://ui-avatars.com/api/?name=' + message.sender + '&background=random&color=fff'" 
+          alt="avatar">
+   
+     <div class="max-w-[70%] px-3.5 py-2.5 transition-all"
+          [ngClass]="{
+            'bg-gray-100 text-gray-800 rounded-[15px_15px_2px_15px]': message.sender === username,
+            'bg-gradient-to-r from-[#296EAC] to-[#4347E2] text-white rounded-[15px_15px_15px_2px]': message.sender !== username && message.sender !== 'Session',
+            'text-black rounded-lg mx-auto !max-w-full text-center py-1': message.sender === 'Session'
+          }">
+       
+       <span *ngIf="message.sender !== 'Session'" 
+             class="block text-[10px] font-bold mb-0.5 uppercase tracking-tight"
+             [class.text-[#296EAC]]="message.sender === username">
+         {{ message.sender }}
+       </span>
+   
+       <p class="m-0 leading-tight text-sm" [class.italic]="message.sender === 'Session'">
+         {{ message.content }}
+       </p>
+     </div>
+   </div>
           
-          <img class="w-9 h-9 rounded-full object-cover border-2 border-white shadow-sm shrink-0" 
-               [src]="'https://ui-avatars.com/api/?name=' + message.sender + '&background=random&color=fff'" 
-               alt="avatar">
-      
-          <div class="max-w-[70%] px-3.5 py-2.5 shadow-sm transition-all"
-               [ngClass]="message.sender === username 
-                ? 'bg-gray-200 text-gray-800 rounded-[15px_15px_2px_15px]' 
-                : 'bg-gradient-to-r from-[#296EAC] to-[#4347E2] text-white rounded-[15px_15px_15px_2px]'">
-            
-            <span class="block text-[10px] font-bold mb-0.5 uppercase tracking-tight"
-                  [class.text-[#296EAC]]="message.sender === username">
-              {{ message.sender }}
-            </span>
-            <p class="m-0 leading-tight text-sm">{{ message.content }}</p>
-          </div>
-        </div>
       </div>
 
       <footer class="flex items-center gap-2 p-3 bg-white border-t border-gray-100">
